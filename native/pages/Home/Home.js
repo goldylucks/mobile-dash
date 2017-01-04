@@ -7,14 +7,13 @@ import logger from '../../utils/logger'
 import * as soap from '../../utils/soap'
 import AccordionNav from '../../components/AccordionNav'
 import Stats from '../../components/Stats'
-import accordionData from '../../../mockAccordionNav'
 
 export default class HomePage extends Component {
 
   state = {
-    accordionData: [],
     token: null,
     stats: [],
+    nav: [],
     accordionActiveKey: '',
     accordionTitle: null,
     accordionShowOnlyTitle: true,
@@ -38,9 +37,6 @@ export default class HomePage extends Component {
         // fetch updated data from server
         this.fetchNav(token)
         this.fetchInitialStats(token)
-        setTimeout(() => {
-          this.setState({ accordionData })
-        }, 1500)
       })
       .catch(err => logger.error('err', err))
   }
@@ -54,7 +50,7 @@ export default class HomePage extends Component {
               showOnlyTitle={ this.state.accordionShowOnlyTitle }
               activeKey={ this.state.accordionActiveKey }
               selectedKey={ this.state.accordionSelectedKey }
-              data={ this.state.accordionData }
+              data={ this.state.nav }
               onClick={ this.onAccordionClick }
               onToggle={ this.onAccordionToggle }
             />
@@ -84,10 +80,10 @@ export default class HomePage extends Component {
   }
 
   onAccordionClick = (key, title, evt) => {
-    logger.log('onAccordionClick', 'key', key, ', title', title, ', evt', evt)
+    logger.log('\n', 'onAccordionClick', 'key', key, ', title', title, ', evt', evt)
     AsyncStorage.setItem('accordionSelectedKey', key)
     AsyncStorage.setItem('accordionSelectedTitle', title)
-    const { token, stats, accordionShowOnlyTitle } = this.state
+    const { token, date, accordionShowOnlyTitle } = this.state
     this.setState({
       accordionShowOnlyTitle: !accordionShowOnlyTitle,
       accordionTitle: title,
@@ -95,15 +91,13 @@ export default class HomePage extends Component {
     if (accordionShowOnlyTitle) {
       return
     }
-    this.fetchStats(token, key, title, stats)
+    this.fetchStats(token, key, title, date)
     this.setState({ accordionSelectedKey: key })
   }
 
   onAccordionToggle = ({ key, title, nextActiveKey, evt }) => {
-    logger.log('onAccordionToggle', key, title, evt)
-    this.setState({
-      accordionActiveKey: nextActiveKey,
-    })
+    logger.log('\n', 'onAccordionToggle', 'key:', key, ', title:', title, ', evt:', evt)
+    this.setState({ accordionActiveKey: nextActiveKey })
   }
 
   onDateChange = date => {
@@ -116,7 +110,7 @@ export default class HomePage extends Component {
 
   authenticateUser () {
     return AsyncStorage.getItem('token').then(token => {
-      logger.log('token from LS:', token)
+      logger.log('user detected! token from LS:', token)
       return token
     })
   }
@@ -150,7 +144,6 @@ export default class HomePage extends Component {
       AsyncStorage.getItem('accordionSelectedDate'),
     ])
     .then(([key, title, date]) => {
-      logger.log('fetchInitialStats', key, title, date)
       if (!key || !title || !date) {
         return
       }
@@ -159,7 +152,6 @@ export default class HomePage extends Component {
     .catch(err => logger.error('fetchInitialStats err:', err))
   }
 
-  // TODO :: make nav the REAL input for accordion
   fetchNav (token) {
     logger.log('fetchNav')
     soap.getNav(token)
@@ -172,10 +164,12 @@ export default class HomePage extends Component {
   }
 
   fetchStats (token, key, title, date) {
+    logger.log('fetchStats:', 'key:', key, ', title:', title, ', date:', date)
     const companyLevel = key.split('.').length
     soap.getStats(token, companyLevel, title, date)
     .then(stats => {
       logger.log('fetchStats success:', stats)
+      this.setState({ stats })
       return AsyncStorage.setItem('stats', JSON.stringify(stats))
     })
     .catch(err => logger.log('fetchStats err:', err))

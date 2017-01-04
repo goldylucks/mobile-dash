@@ -5,17 +5,22 @@ import Circle from 'react-native-progress/Circle'
 export default class Stats extends Component {
 
   static propTypes = {
-    data: PropTypes.array.isRequired,
+    data: PropTypes.arrayOf(
+      PropTypes.shape({
+        IndexName: PropTypes.string,
+        IndexValue: PropTypes.string,
+      })
+    ).isRequired,
   }
 
   render () {
     return (
       <View style={ styles.container }>
         {
-          this.props.data.map(({ title, value }) => (
-            <View style={ styles.stat } key={ title }>
-              <Text style={ styles.statTitle }>{ title }</Text>
-              <Circle size={ 120 } progress={ value } showsText formatText={ () => this.formatCircleText(value) } />
+          this.props.data.map(({ IndexName, IndexValue }) => (
+            <View style={ styles.stat } key={ IndexName }>
+              <Text style={ styles.statTitle }>{ IndexName }</Text>
+              <Circle size={ 80 } progress={ Number(IndexValue) } showsText formatText={ () => this.formatCircleText(IndexValue) } />
             </View>
           ))
         }
