@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import { View, Text } from 'react-native'
+import { View, Text, ScrollView, Dimensions } from 'react-native'
 
 export default class AccordionNav extends Component {
 
@@ -35,9 +35,9 @@ export default class AccordionNav extends Component {
       )
     }
     return (
-      <View style={ styles.container }>
+      <ScrollView style={ { height: Dimensions.get('window').height * 0.97 } }>
         { this.props.data.map((item, idx) => this.renderRecursion(item, idx)) }
-      </View>
+      </ScrollView>
     )
   }
 
@@ -114,7 +114,7 @@ export default class AccordionNav extends Component {
 const styles = {
   row: {
     backgroundColor: '#eee',
-    paddingLeft: 5,
+    paddingLeft: 10,
   },
   activeRow: {
     backgroundColor: '#dad5d5',
