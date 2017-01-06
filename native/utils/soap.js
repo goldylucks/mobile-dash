@@ -51,7 +51,6 @@ function _getNav (token) {
     xmlhttp.onreadystatechange = function () {
       if (xmlhttp.readyState === 4) {
         if (xmlhttp.status === 200) {
-          console.log('xmlhttp._response', _formatSuccess(xmlhttp._response))
           resolve(JSON.parse(
             _formatSuccess(xmlhttp._response)
           ))
