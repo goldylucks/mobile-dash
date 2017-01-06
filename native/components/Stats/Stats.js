@@ -20,7 +20,7 @@ export default class Stats extends Component {
           this.props.data.map(({ IndexName, IndexValue }) => (
             <View style={ styles.stat } key={ IndexName }>
               <Text style={ styles.statTitle }>{ IndexName }</Text>
-              <Circle size={ 80 } progress={ Number(IndexValue) } showsText formatText={ () => this.formatCircleText(IndexValue) } />
+              <Circle size={ 80 } progress={ Number(IndexValue / 100) } showsText formatText={ () => this.formatCircleText(IndexValue / 100) } />
             </View>
           ))
         }
