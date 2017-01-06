@@ -164,8 +164,8 @@ export default class HomePage extends Component {
   }
 
   fetchStats (token, key, title, date) {
-    logger.log('fetchStats:', 'key:', key, ', title:', title, ', date:', date)
     const companyLevel = key.split('.').length
+    logger.log('fetchStats:', 'key:', key, ', companyLevel:', companyLevel, ', title:', title, ', date:', date)
     soap.getStats(token, companyLevel, title, date)
     .then(stats => {
       logger.log('fetchStats success:', stats)
