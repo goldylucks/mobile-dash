@@ -29,12 +29,6 @@ export default class HomePage extends Component {
           return
         }
         this.setState({ token })
-        // get as much data as possible from LS first for better user experience
-        // so the user will c something until data comes from server
-        // this.syncNavFromLs()
-        // this.syncDateFromLs()
-        // this.syncStatsFromLs()
-        // fetch updated data from server
         this.fetchNav(token)
         this.fetchInitialStats(token)
       })
@@ -81,8 +75,6 @@ export default class HomePage extends Component {
 
   onAccordionClick = (key, title, evt) => {
     logger.log('\n', 'onAccordionClick', 'key', key, ', title', title, ', evt', evt)
-    AsyncStorage.setItem('accordionSelectedKey', key)
-    AsyncStorage.setItem('accordionSelectedTitle', title)
     const { token, date, accordionShowOnlyTitle } = this.state
     this.setState({
       accordionShowOnlyTitle: !accordionShowOnlyTitle,
@@ -105,7 +97,6 @@ export default class HomePage extends Component {
     const { token, accordionSelectedKey, accordionTitle } = this.state
     this.setState({ date })
     this.fetchStats(token, accordionSelectedKey, accordionTitle, date)
-    AsyncStorage.setItem('accordionSelectedDate', date)
   }
 
   authenticateUser () {
@@ -115,28 +106,6 @@ export default class HomePage extends Component {
     })
   }
 
-  syncNavFromLs () {
-    AsyncStorage.getItem('nav')
-      .then(nav => nav && this.setState({ nav: JSON.parse(nav) }))
-      .catch(err => logger.error('syncNavFromLs err:', err))
-  }
-
-  syncDateFromLs () {
-    AsyncStorage.getItem('accordionSelectedDate')
-      .then(date => date && this.setState({ date }))
-      .catch(err => logger.error('syncDateFromLs err:', err))
-  }
-
-  // get stats from ls before we get them from server
-  // so user don't have to wait to c something everytime she
-  // starts the app
-  syncStatsFromLs () {
-    AsyncStorage.getItem('stats')
-      .then(stats => stats && this.setState({ stats: JSON.parse(stats) }))
-      .catch(err => logger.error('syncStatsFromLs err:', err))
-  }
-
-  // fetch stats on load, in the meantime user sees stats from LS
   fetchInitialStats (token) {
     Promise.all([
       AsyncStorage.getItem('accordionSelectedKey'),
