@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
-import { View, Text, ScrollView, Dimensions } from 'react-native'
+import { View, Text, ScrollView, Dimensions, Alert } from 'react-native'
+import { Actions, ActionConst } from 'react-native-router-flux'
 
 export default class AccordionNav extends Component {
 
@@ -24,9 +25,10 @@ export default class AccordionNav extends Component {
     if (this.props.showOnlyTitle) {
       return (
         <View style={ styles.container }>
-          <View style={ styles.row }>
+          <View style={ [styles.row, styles.rowCollapsed] }>
+            <Text style={ styles.backButton } onPress={ this.onBackPress }>{ '<' }</Text>
             <Text
-              style={ styles.title }
+              style={ [styles.title, styles.titleCollapsed] }
               onPress={ evt => this.onClick(null, null, evt) }>
               { this.getOnlyTitle() }
             </Text>
@@ -109,6 +111,17 @@ export default class AccordionNav extends Component {
     this.props.onToggle({ key, title, nextActiveKey, evt })
   }
 
+  onBackPress = evt => {
+    Alert.alert(
+      'Logout?',
+      null,
+      [
+        { text: 'Cancel', onPress: () => { } },
+        { text: 'Logout', onPress: () => Actions.login({ type: ActionConst.RESET }) },
+      ]
+    )
+  }
+
 }
 
 const styles = {
@@ -116,12 +129,23 @@ const styles = {
     backgroundColor: '#eee',
     paddingLeft: 10,
   },
+  rowCollapsed: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   activeRow: {
     backgroundColor: '#dad5d5',
   },
   title: {
     fontSize: 20,
     padding: 10,
+  },
+  titleCollapsed: {
+    flex: 1,
+  },
+  backButton: {
+    fontSize: 30,
+    marginRight: 20,
   },
   toggle: {
     position: 'absolute',
