@@ -150,7 +150,8 @@ const styles = {
   },
   backButton: {
     fontSize: 30,
-    marginRight: 20,
+    paddingRight: 10,
+    paddingLeft: 10,
   },
   toggle: {
     position: 'absolute',
