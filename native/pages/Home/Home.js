@@ -22,12 +22,13 @@ export default class HomePage extends Component {
   }
 
   componentWillMount () {
-    this.authenticateUser()
+    AsyncStorage.getItem('token')
       .then(token => {
         if (!token) {
           Actions.login({ type: ActionConst.RESET })
           return
         }
+        logger.log('user detected! token from LS:', token)
         this.setState({ token })
         this.fetchNav(token)
         this.fetchInitialStats(token)
@@ -97,13 +98,6 @@ export default class HomePage extends Component {
     const { token, accordionSelectedKey, accordionTitle } = this.state
     this.setState({ date })
     this.fetchStats(token, accordionSelectedKey, accordionTitle, date)
-  }
-
-  authenticateUser () {
-    return AsyncStorage.getItem('token').then(token => {
-      logger.log('user detected! token from LS:', token)
-      return token
-    })
   }
 
   fetchInitialStats (token) {
