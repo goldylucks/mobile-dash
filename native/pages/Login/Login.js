@@ -51,6 +51,7 @@ export default class LoginPage extends Component {
     this.setState({ isProcessing: true })
     soap.login(username, password, company)
     .then(token => {
+      logger.log('onSubmit success: token:', token)
       this.setState({ isProcessing: false })
       this.saveToLs(token)
     })
