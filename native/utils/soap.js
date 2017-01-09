@@ -51,9 +51,13 @@ function _getNav (token) {
     xmlhttp.onreadystatechange = function () {
       if (xmlhttp.readyState === 4) {
         if (xmlhttp.status === 200) {
-          resolve(JSON.parse(
-            _formatSuccess(xmlhttp._response)
-          ))
+          try {
+            resolve(JSON.parse(
+              _formatSuccess(xmlhttp._response)
+            ))
+          } catch (err) {
+            reject('soap getNav err: ' + err)
+          }
         } else {
           reject(xmlhttp._response)
         }
@@ -85,9 +89,13 @@ function _getStats (token, companyLevel, levelParameter, date) {
     xmlhttp.onreadystatechange = function () {
       if (xmlhttp.readyState === 4) {
         if (xmlhttp.status === 200) {
-          resolve(JSON.parse(
-            _formatSuccess(xmlhttp._response)
-          ))
+          try {
+            resolve(JSON.parse(
+              _formatSuccess(xmlhttp._response)
+            ))
+          } catch (err) {
+            reject('soap getStats err: ' + err)
+          }
         } else {
           reject(xmlhttp._response)
         }
