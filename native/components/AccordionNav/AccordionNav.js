@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import { View, Text, ScrollView, Dimensions, Alert, AsyncStorage } from 'react-native'
+import { View, Text, ScrollView, Dimensions, Alert, AsyncStorage, TouchableWithoutFeedback } from 'react-native'
 import { Actions, ActionConst } from 'react-native-router-flux'
 
 export default class AccordionNav extends Component {
@@ -26,7 +26,13 @@ export default class AccordionNav extends Component {
       return (
         <View style={ styles.container }>
           <View style={ [styles.row, styles.rowCollapsed] }>
-            <Text style={ styles.backButton } onPress={ this.onBackPress }>{ '<' }</Text>
+            <TouchableWithoutFeedback onPress={ this.onBackPress }>
+              <View style={ styles.backButton }>
+                <View style={ styles.backButtonLine } />
+                <View style={ styles.backButtonLine } />
+                <View style={ styles.backButtonLine } />
+              </View>
+            </TouchableWithoutFeedback>
             <Text
               style={ [styles.title, styles.titleCollapsed] }
               onPress={ evt => this.onClick(null, null, evt) }>
@@ -134,25 +140,39 @@ const styles = {
     backgroundColor: '#D0E28D',
     paddingLeft: 10,
   },
+
   rowCollapsed: {
     flexDirection: 'row',
     alignItems: 'center',
   },
+
   activeRow: {
     backgroundColor: '#006738',
   },
+
   title: {
     fontSize: 20,
     padding: 10,
   },
+
   titleCollapsed: {
     flex: 1,
   },
+
   backButton: {
-    fontSize: 30,
     paddingRight: 10,
     paddingLeft: 10,
+    justifyContent: 'space-between',
   },
+
+  backButtonLine: {
+    backgroundColor: 'black',
+    height: 2,
+    width: 20,
+    marginBottom: 2,
+    marginTop: 2,
+  },
+
   toggle: {
     position: 'absolute',
     top: 0,
@@ -161,7 +181,9 @@ const styles = {
     fontSize: 20,
     color: 'black',
   },
+
   toggleOpened: {
     transform: [{ rotate: '90deg' }],
   },
+
 }

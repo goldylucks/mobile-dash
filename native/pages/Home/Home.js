@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, AsyncStorage, Text, TouchableWithoutFeedback, Dimensions } from 'react-native'
+import { View, AsyncStorage, TouchableWithoutFeedback, Dimensions, ActivityIndicator } from 'react-native'
 import { Actions, ActionConst } from 'react-native-router-flux'
 import DatePicker from 'react-native-datepicker'
 import moment from 'moment'
@@ -98,7 +98,14 @@ export default class HomePage extends Component {
 
   renderLoadingStats () {
     return (
-      <Text style={ [styles.loading, this.state.loadingStats ? {} : styles.hideLoading] }>Loading stats ...</Text>
+      <View style={ [styles.loading, this.state.loadingStats ? {} : styles.hideLoading] }>
+        <ActivityIndicator
+          animating
+          style={ styles.loadingIndicator }
+          color={ '#D0E28D' }
+          size={ 100 }
+        />
+      </View>
     )
   }
 
@@ -242,7 +249,7 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
-    marginLeft: 20,
+    marginLeft: 15,
   },
 
   rightDateArrowPointer: {
@@ -267,9 +274,9 @@ const styles = {
     right: 0,
     left: 0,
     backgroundColor: 'rgba(50, 50, 50, 0.8)',
-    fontSize: 50,
-    color: '#fff',
     zIndex: 999,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 
   // workaround for bug
