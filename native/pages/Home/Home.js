@@ -68,6 +68,10 @@ export default class HomePage extends Component {
   renderDate () {
     return (
       <View style={ styles.dateContainer }>
+        <View style={ styles.leftDateArrow }>
+          <View style={ styles.leftDateArrowPointer } />
+          <View style={ styles.leftDateArrowBase } />
+        </View>
         <DatePicker
           date={ this.state.date }
           maxDate={ moment().format('DD MMM YYYY') }
@@ -78,6 +82,10 @@ export default class HomePage extends Component {
           cancelBtnText='Cancel'
           onDateChange={ this.onDateChange }
         />
+        <View style={ styles.rightDateArrow }>
+          <View style={ styles.rightDateArrowBase } />
+          <View style={ styles.rightDateArrowPointer } />
+        </View>
       </View>
     )
   }
@@ -177,9 +185,11 @@ const styles = {
   container: {
     flex: 1,
   },
+
   accordionWrap: {
     height: 50,
   },
+
   accordion: {
     position: 'absolute',
     zIndex: 10,
@@ -187,4 +197,54 @@ const styles = {
     right: 0,
     left: 0,
   },
+
+  dateContainer: {
+    justifyContent: 'center',
+    flexDirection: 'row',
+  },
+
+  leftDateArrow: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+    marginRight: 20,
+  },
+
+  leftDateArrowPointer: {
+    borderTopColor: 'transparent',
+    borderBottomColor: 'transparent',
+    borderRightColor: '#006738',
+    borderTopWidth: 10,
+    borderBottomWidth: 10,
+    borderRightWidth: 20,
+  },
+
+  leftDateArrowBase: {
+    backgroundColor: '#006738',
+    height: 10,
+    width: 20,
+  },
+
+  rightDateArrow: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+    marginLeft: 20,
+  },
+
+  rightDateArrowPointer: {
+    borderTopColor: 'transparent',
+    borderBottomColor: 'transparent',
+    borderLeftColor: '#006738',
+    borderTopWidth: 10,
+    borderBottomWidth: 10,
+    borderLeftWidth: 20,
+  },
+
+  rightDateArrowBase: {
+    backgroundColor: '#006738',
+    height: 10,
+    width: 20,
+  },
+
 }

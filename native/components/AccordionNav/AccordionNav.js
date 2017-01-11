@@ -131,7 +131,7 @@ export default class AccordionNav extends Component {
 
 const styles = {
   row: {
-    backgroundColor: '#eee',
+    backgroundColor: '#D0E28D',
     paddingLeft: 10,
   },
   rowCollapsed: {
@@ -139,7 +139,7 @@ const styles = {
     alignItems: 'center',
   },
   activeRow: {
-    backgroundColor: '#dad5d5',
+    backgroundColor: '#006738',
   },
   title: {
     fontSize: 20,
