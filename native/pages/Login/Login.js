@@ -20,19 +20,27 @@ export default class LoginPage extends Component {
       <View style={ styles.container }>
         <Text style={ styles.label }>Username</Text>
         <TextInput
+          autoFocus
+          onSubmitEditing={ () => this._passwordInput.focus() }
+          returnKeyType='next'
           style={ styles.input }
           onChangeText={ username => this.setState({ username, error: false }) }
           value={ username }
         />
         <Text style={ styles.label }>Password</Text>
         <TextInput
+          onSubmitEditing={ () => this._companyInput.focus() }
+          ref={ el => this._passwordInput = el }
           style={ styles.input }
           secureTextEntry
+          returnKeyType='next'
           onChangeText={ password => this.setState({ password, error: false }) }
           value={ password }
         />
         <Text style={ styles.label }>Company</Text>
         <TextInput
+          onSubmitEditing={ () => this.onSubmit() }
+          ref={ el => this._companyInput = el }
           style={ styles.input }
           onChangeText={ company => this.setState({ company, error: false }) }
           value={ company }
