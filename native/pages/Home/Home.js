@@ -54,7 +54,7 @@ export default class HomePage extends Component {
         <View style={ styles.dateContainer }>
           { this.renderDatePicker() }
         </View>
-        <Stats data={ this.state.stats } />
+        { this.state.stats.length ? <Stats data={ this.state.stats } /> : null }
       </View>
     )
   }

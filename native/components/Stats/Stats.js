@@ -14,16 +14,29 @@ export default class Stats extends Component {
   }
 
   render () {
+    const { data } = this.props
     return (
       <View style={ styles.container }>
-        {
-          this.props.data.map(({ IndexName, IndexValue }) => (
-            <View style={ styles.stat } key={ IndexName }>
-              <Text style={ styles.statTitle }>{ IndexName }</Text>
-              <Circle size={ 80 } progress={ Number(IndexValue / 100) } showsText formatText={ () => this.formatCircleText(IndexValue / 100) } />
-            </View>
-          ))
-        }
+        <View style={ styles.row }>
+          <View style={ styles.stat } key={ data[0].IndexName }>
+            <Text style={ styles.statTitle }>{ data[0].IndexName }</Text>
+            <Circle size={ 120 } progress={ Number(data[0].IndexValue / 100) } showsText formatText={ () => this.formatCircleText(data[0].IndexValue / 100) } />
+          </View>
+          <View style={ styles.stat } key={ data[1].IndexName }>
+            <Text style={ styles.statTitle }>{ data[1].IndexName }</Text>
+            <Circle size={ 120 } progress={ Number(data[1].IndexValue / 100) } showsText formatText={ () => this.formatCircleText(data[1].IndexValue / 100) } />
+          </View>
+        </View>
+        <View style={ styles.row }>
+          <View style={ styles.stat } key={ data[2].IndexName }>
+            <Text style={ styles.statTitle }>{ data[2].IndexName }</Text>
+            <Circle size={ 120 } progress={ Number(data[2].IndexValue / 100) } showsText formatText={ () => this.formatCircleText(data[2].IndexValue / 100) } />
+          </View>
+          <View style={ styles.stat } key={ data[3].IndexName }>
+            <Text style={ styles.statTitle }>{ data[3].IndexName }</Text>
+            <Circle size={ 120 } progress={ Number(data[3].IndexValue / 100) } showsText formatText={ () => this.formatCircleText(data[3].IndexValue / 100) } />
+          </View>
+        </View>
       </View>
     )
   }
@@ -38,6 +51,13 @@ const styles = {
   container: {
     flex: 1,
     paddingTop: 10,
+    justifyContent: 'space-around',
+  },
+
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
   },
 
   stat: {
