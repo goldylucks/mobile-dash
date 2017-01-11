@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, AsyncStorage, Text, TouchableWithoutFeedback } from 'react-native'
+import { View, AsyncStorage, Text, TouchableWithoutFeedback, Dimensions } from 'react-native'
 import { Actions, ActionConst } from 'react-native-router-flux'
 import DatePicker from 'react-native-datepicker'
 import moment from 'moment'
@@ -97,13 +97,8 @@ export default class HomePage extends Component {
   }
 
   renderLoadingStats () {
-    if (!this.state.loadingStats) {
-      return
-    }
     return (
-      <View>
-        <Text>Loading stats ...</Text>
-      </View>
+      <Text style={ [styles.loading, this.state.loadingStats ? {} : styles.hideLoading] }>Loading stats ...</Text>
     )
   }
 
@@ -263,6 +258,23 @@ const styles = {
     backgroundColor: '#006738',
     height: 10,
     width: 20,
+  },
+
+  loading: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    right: 0,
+    left: 0,
+    backgroundColor: 'rgba(50, 50, 50, 0.8)',
+    fontSize: 50,
+    color: '#fff',
+    zIndex: 999,
+  },
+
+  // workaround for bug
+  hideLoading: {
+    top: Dimensions.get('window').height * 2, // multiply by 2 just in case
   },
 
 }
