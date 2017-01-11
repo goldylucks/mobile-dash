@@ -34,7 +34,6 @@ export default class HomePage extends Component {
         logger.log('user detected! token from LS:', token)
         this.setState({ token })
         this.fetchNav(token)
-        this.fetchInitialStats(token)
       })
       .catch(err => logger.error('err', err))
   }
@@ -154,21 +153,6 @@ export default class HomePage extends Component {
     const { token, accordionSelectedKey, accordionTitle } = this.state
     this.setState({ date })
     this.fetchStats(token, accordionSelectedKey, accordionTitle, date)
-  }
-
-  fetchInitialStats (token) {
-    Promise.all([
-      AsyncStorage.getItem('accordionSelectedKey'),
-      AsyncStorage.getItem('accordionSelectedTitle'),
-      AsyncStorage.getItem('accordionSelectedDate'),
-    ])
-    .then(([key, title, date]) => {
-      if (!key || !title || !date) {
-        return
-      }
-      this.fetchStats(token, key, title, date)
-    })
-    .catch(err => logger.error('fetchInitialStats err:', err))
   }
 
   fetchNav (token) {
