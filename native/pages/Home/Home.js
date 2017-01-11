@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, AsyncStorage } from 'react-native'
+import { View, AsyncStorage, Text } from 'react-native'
 import { Actions, ActionConst } from 'react-native-router-flux'
 import DatePicker from 'react-native-datepicker'
 import moment from 'moment'
@@ -13,6 +13,7 @@ export default class HomePage extends Component {
   state = {
     token: null,
     stats: [],
+    loadingStats: false,
     nav: [],
     accordionActiveKey: '',
     accordionTitle: null,
@@ -39,38 +40,65 @@ export default class HomePage extends Component {
   render () {
     return (
       <View style={ styles.container }>
-        <View style={ styles.accordionWrap }>
-          <View style={ styles.accordion }>
-            <AccordionNav
-              showOnlyTitle={ this.state.accordionShowOnlyTitle }
-              activeKey={ this.state.accordionActiveKey }
-              selectedKey={ this.state.accordionSelectedKey }
-              data={ this.state.nav }
-              onClick={ this.onAccordionClick }
-              onToggle={ this.onAccordionToggle }
-            />
-          </View>
-        </View>
-        <View style={ styles.dateContainer }>
-          { this.renderDatePicker() }
-        </View>
-        { this.state.stats.length ? <Stats data={ this.state.stats } /> : null }
+        { this.renderNav() }
+        { this.renderLoadingStats() }
+        { this.renderDate() }
+        { this.renderStats() }
       </View>
     )
   }
 
-  renderDatePicker () {
+  renderNav () {
     return (
-      <DatePicker
-        date={ this.state.date }
-        maxDate={ moment().format('DD MMM YYYY') }
-        mode='date'
-        placeholder='select date'
-        format='DD MMM YYYY'
-        confirmBtnText='Confirm'
-        cancelBtnText='Cancel'
-        onDateChange={ this.onDateChange }
-      />
+      <View style={ styles.accordionWrap }>
+        <View style={ styles.accordion }>
+          <AccordionNav
+            showOnlyTitle={ this.state.accordionShowOnlyTitle }
+            activeKey={ this.state.accordionActiveKey }
+            selectedKey={ this.state.accordionSelectedKey }
+            data={ this.state.nav }
+            onClick={ this.onAccordionClick }
+            onToggle={ this.onAccordionToggle }
+          />
+        </View>
+      </View>
+    )
+  }
+
+  renderDate () {
+    return (
+      <View style={ styles.dateContainer }>
+        <DatePicker
+          date={ this.state.date }
+          maxDate={ moment().format('DD MMM YYYY') }
+          mode='date'
+          placeholder='select date'
+          format='DD MMM YYYY'
+          confirmBtnText='Confirm'
+          cancelBtnText='Cancel'
+          onDateChange={ this.onDateChange }
+        />
+      </View>
+    )
+  }
+
+  renderLoadingStats () {
+    if (!this.state.loadingStats) {
+      return
+    }
+    return (
+      <View>
+        <Text>Loading stats ...</Text>
+      </View>
+    )
+  }
+
+  renderStats () {
+    if (!this.state.stats.length) {
+      return
+    }
+    return (
+      <Stats data={ this.state.stats } />
     )
   }
 
@@ -127,15 +155,20 @@ export default class HomePage extends Component {
   }
 
   fetchStats (token, key, title, date) {
+    this.setState({ loadingStats: true })
     const companyLevel = key.split('.').length
     logger.log('fetchStats:', 'key:', key, ', companyLevel:', companyLevel, ', title:', title, ', date:', date)
     soap.getStats(token, companyLevel, title, date)
     .then(stats => {
       logger.log('fetchStats success:', stats)
+      this.setState({ loadingStats: false })
       this.setState({ stats })
       return AsyncStorage.setItem('stats', JSON.stringify(stats))
     })
-    .catch(err => logger.log('fetchStats err:', err))
+    .catch(err => {
+      this.setState({ loadingStats: false })
+      logger.log('fetchStats err:', err)
+    })
   }
 
 }

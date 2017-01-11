@@ -17,22 +17,22 @@ export default class Stats extends Component {
     const { data } = this.props
     return (
       <View style={ styles.container }>
-        <View style={ styles.row }>
-          <View style={ styles.stat } key={ data[0].IndexName }>
+        <View style={ [styles.row, styles.firstRow] }>
+          <View style={ [styles.stat, styles.firstStat] } key={ data[0].IndexName }>
             <Text style={ styles.statTitle }>{ data[0].IndexName }</Text>
             <Circle size={ 120 } progress={ Number(data[0].IndexValue / 100) } showsText formatText={ () => this.formatCircleText(data[0].IndexValue / 100) } />
           </View>
-          <View style={ styles.stat } key={ data[1].IndexName }>
+          <View style={ [styles.stat, styles.secondStat] } key={ data[1].IndexName }>
             <Text style={ styles.statTitle }>{ data[1].IndexName }</Text>
             <Circle size={ 120 } progress={ Number(data[1].IndexValue / 100) } showsText formatText={ () => this.formatCircleText(data[1].IndexValue / 100) } />
           </View>
         </View>
-        <View style={ styles.row }>
-          <View style={ styles.stat } key={ data[2].IndexName }>
+        <View style={ [styles.row, styles.secondRow] }>
+          <View style={ [styles.stat, styles.firstStat] } key={ data[2].IndexName }>
             <Text style={ styles.statTitle }>{ data[2].IndexName }</Text>
             <Circle size={ 120 } progress={ Number(data[2].IndexValue / 100) } showsText formatText={ () => this.formatCircleText(data[2].IndexValue / 100) } />
           </View>
-          <View style={ styles.stat } key={ data[3].IndexName }>
+          <View style={ [styles.stat, styles.secondStat] } key={ data[3].IndexName }>
             <Text style={ styles.statTitle }>{ data[3].IndexName }</Text>
             <Circle size={ 120 } progress={ Number(data[3].IndexValue / 100) } showsText formatText={ () => this.formatCircleText(data[3].IndexValue / 100) } />
           </View>
@@ -60,9 +60,25 @@ const styles = {
     alignItems: 'center',
   },
 
+  firstRow: {
+    marginTop: 30,
+  },
+
+  secondRow: {
+    marginBottom: 60,
+  },
+
   stat: {
     flex: 1,
     alignItems: 'center',
+  },
+
+  firstStat: {
+    marginLeft: 15,
+  },
+
+  secondStat: {
+    marginRight: 15,
   },
 
   statTitle: {
