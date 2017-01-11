@@ -16,6 +16,7 @@ export default class HomePage extends Component {
     token: null,
     stats: [],
     loadingStats: false,
+    isViewLoaded: false,
     nav: [],
     accordionActiveKey: '',
     accordionTitle: null,
@@ -33,16 +34,28 @@ export default class HomePage extends Component {
         }
         logger.log('user detected! token from LS:', token)
         this.setState({ token })
-        this.fetchNav(token)
+        return this.fetchNav(token)
       })
+      .then(() => this.setState({ isViewLoaded: true }))
       .catch(err => logger.error('err', err))
   }
 
   render () {
     return (
       <View style={ styles.container }>
+        { this.renderContent() }
+        { this.renderLoading() }
+      </View>
+    )
+  }
+
+  renderContent () {
+    if (!this.state.isViewLoaded) {
+      return
+    }
+    return (
+      <View style={ styles.container }>
         { this.renderNav() }
-        { this.renderLoadingStats() }
         { this.renderDate() }
         { this.renderStats() }
       </View>
@@ -95,9 +108,9 @@ export default class HomePage extends Component {
     )
   }
 
-  renderLoadingStats () {
+  renderLoading () {
     return (
-      <View style={ [styles.loading, this.state.loadingStats ? {} : styles.hideLoading] }>
+      <View style={ [styles.loading, (this.state.loadingStats || !this.state.isViewLoaded) ? {} : styles.hideLoading] }>
         <ActivityIndicator
           animating
           style={ styles.loadingIndicator }
@@ -157,7 +170,7 @@ export default class HomePage extends Component {
 
   fetchNav (token) {
     logger.log('fetchNav')
-    soap.getNav(token)
+    return soap.getNav(token)
       .then(nav => {
         logger.log('fetchNav success:', nav)
         this.setState({ nav })
