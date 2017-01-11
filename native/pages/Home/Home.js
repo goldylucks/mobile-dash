@@ -34,9 +34,9 @@ export default class HomePage extends Component {
         }
         logger.log('user detected! token from LS:', token)
         this.setState({ token })
-        return this.fetchNav(token)
+        this.fetchNav(token)
+          .then(() => this.setState({ isViewLoaded: true }))
       })
-      .then(() => this.setState({ isViewLoaded: true }))
       .catch(err => logger.error('err', err))
   }
 
