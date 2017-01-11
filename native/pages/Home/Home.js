@@ -149,7 +149,6 @@ export default class HomePage extends Component {
       .then(nav => {
         logger.log('fetchNav success:', nav)
         this.setState({ nav })
-        return AsyncStorage.setItem('nav', JSON.stringify(nav))
       })
       .catch(err => logger.error('fetchNav err:', err))
   }
@@ -161,13 +160,14 @@ export default class HomePage extends Component {
     soap.getStats(token, companyLevel, title, date)
     .then(stats => {
       logger.log('fetchStats success:', stats)
-      this.setState({ loadingStats: false })
-      this.setState({ stats })
-      return AsyncStorage.setItem('stats', JSON.stringify(stats))
+      this.setState({
+        loadingStats: false,
+        stats,
+      })
     })
     .catch(err => {
       this.setState({ loadingStats: false })
-      logger.log('fetchStats err:', err)
+      logger.error('fetchStats err:', err)
     })
   }
 
