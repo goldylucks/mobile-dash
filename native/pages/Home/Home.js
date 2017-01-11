@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, AsyncStorage, Text } from 'react-native'
+import { View, AsyncStorage, Text, TouchableWithoutFeedback } from 'react-native'
 import { Actions, ActionConst } from 'react-native-router-flux'
 import DatePicker from 'react-native-datepicker'
 import moment from 'moment'
@@ -7,6 +7,8 @@ import logger from '../../utils/logger'
 import * as soap from '../../utils/soap'
 import AccordionNav from '../../components/AccordionNav'
 import Stats from '../../components/Stats'
+
+const dateFormat = 'DD MMM YYYY'
 
 export default class HomePage extends Component {
 
@@ -19,7 +21,7 @@ export default class HomePage extends Component {
     accordionTitle: null,
     accordionShowOnlyTitle: true,
     accordionSelectedKey: '0',
-    date: moment().format('DD MMM YYYY'),
+    date: moment().format(dateFormat),
   }
 
   componentWillMount () {
@@ -68,10 +70,12 @@ export default class HomePage extends Component {
   renderDate () {
     return (
       <View style={ styles.dateContainer }>
-        <View style={ styles.leftDateArrow }>
-          <View style={ styles.leftDateArrowPointer } />
-          <View style={ styles.leftDateArrowBase } />
-        </View>
+        <TouchableWithoutFeedback onPress={ this.decreaseDate }>
+          <View style={ styles.leftDateArrow }>
+            <View style={ styles.leftDateArrowPointer } />
+            <View style={ styles.leftDateArrowBase } />
+          </View>
+        </TouchableWithoutFeedback>
         <DatePicker
           date={ this.state.date }
           maxDate={ moment().format('DD MMM YYYY') }
@@ -82,10 +86,12 @@ export default class HomePage extends Component {
           cancelBtnText='Cancel'
           onDateChange={ this.onDateChange }
         />
-        <View style={ styles.rightDateArrow }>
-          <View style={ styles.rightDateArrowBase } />
-          <View style={ styles.rightDateArrowPointer } />
-        </View>
+        <TouchableWithoutFeedback onPress={ this.increaseDate }>
+          <View style={ styles.rightDateArrow } onPress={ this.increaseDate }>
+            <View style={ styles.rightDateArrowBase } />
+            <View style={ styles.rightDateArrowPointer } />
+          </View>
+        </TouchableWithoutFeedback>
       </View>
     )
   }
@@ -108,6 +114,18 @@ export default class HomePage extends Component {
     return (
       <Stats data={ this.state.stats } />
     )
+  }
+
+  increaseDate = evt => {
+    const newDate = moment(this.state.date, dateFormat).add(1, 'day').format(dateFormat)
+    this.setState({ date: newDate })
+    this.onDateChange(newDate)
+  }
+
+  decreaseDate = evt => {
+    const newDate = moment(this.state.date, dateFormat).subtract(1, 'day').format(dateFormat)
+    this.setState({ date: newDate })
+    this.onDateChange(newDate)
   }
 
   onAccordionClick = (key, title, evt) => {
