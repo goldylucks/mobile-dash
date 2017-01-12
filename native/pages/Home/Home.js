@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, AsyncStorage, TouchableWithoutFeedback, Dimensions, ActivityIndicator } from 'react-native'
+import { View, Image, AsyncStorage, TouchableWithoutFeedback, Dimensions, ActivityIndicator } from 'react-native'
 import { Actions, ActionConst } from 'react-native-router-flux'
 import DatePicker from 'react-native-datepicker'
 import moment from 'moment'
@@ -42,10 +42,10 @@ export default class HomePage extends Component {
 
   render () {
     return (
-      <View style={ styles.container }>
+      <Image source={ require('../../../assets/images/background.png') } style={ [styles.backgroundImage] }>
         { this.renderContent() }
         { this.renderLoading() }
-      </View>
+      </Image>
     )
   }
 
@@ -54,7 +54,7 @@ export default class HomePage extends Component {
       return
     }
     return (
-      <View style={ styles.container }>
+      <View style={ [styles.container, styles.content] }>
         { this.renderNav() }
         { this.renderDate() }
         { this.renderStats() }
@@ -199,6 +199,14 @@ export default class HomePage extends Component {
 }
 
 const styles = {
+  backgroundImage: {
+    flex: 1,
+    resizeMode: 'contain',
+    // remove width and height to override fixed static size
+    width: null,
+    height: null,
+  },
+
   container: {
     flex: 1,
   },
