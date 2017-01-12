@@ -43,7 +43,7 @@ export default class AccordionNav extends Component {
       )
     }
     return (
-      <ScrollView style={ { height: Dimensions.get('window').height * 0.97 } }>
+      <ScrollView style={ { maxHeight: Dimensions.get('window').height * 0.97 } }>
         { this.props.data.map((item, idx) => this.renderRecursion(item, idx)) }
       </ScrollView>
     )
@@ -138,7 +138,7 @@ export default class AccordionNav extends Component {
 const styles = {
   row: {
     backgroundColor: '#D0E28D',
-    paddingLeft: 10,
+    paddingLeft: 20,
   },
 
   rowCollapsed: {
@@ -151,18 +151,25 @@ const styles = {
   },
 
   title: {
+    paddingTop: 10,
     fontSize: 20,
-    padding: 10,
+    paddingBottom: 10,
   },
 
   titleCollapsed: {
+    textAlign: 'center',
     flex: 1,
   },
 
   backButton: {
     paddingRight: 10,
     paddingLeft: 10,
-    justifyContent: 'space-between',
+    position: 'absolute',
+    zIndex: 10,
+    left: 0,
+    top: 0,
+    bottom: 0,
+    justifyContent: 'center',
   },
 
   backButtonLine: {
