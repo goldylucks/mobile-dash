@@ -1,9 +1,16 @@
+import mockNav from './mockNav'
+import mockStats from './mockStats'
+
 export const login = _login
 export const getNav = _getNav
 export const getStats = _getStats
 
 function _login (username, password, company) {
   return new Promise((resolve, reject) => {
+    if (__DEV__) {
+      resolve('DevToken')
+      return
+    }
     const xmlhttp = new global.XMLHttpRequest()
     xmlhttp.open('POST', 'http://www.per4ma.org/p4lc/p4lc.asmx', true)
 
@@ -35,6 +42,10 @@ function _login (username, password, company) {
 
 function _getNav (token) {
   return new Promise((resolve, reject) => {
+    if (__DEV__) {
+      resolve(mockNav)
+      return
+    }
     const xmlhttp = new global.XMLHttpRequest()
     xmlhttp.open('POST', 'http://www.per4ma.org/p4lc/p4lc.asmx', true)
 
@@ -70,6 +81,10 @@ function _getNav (token) {
 
 function _getStats (token, companyLevel, levelParameter, date) {
   return new Promise((resolve, reject) => {
+    if (__DEV__) {
+      resolve(mockStats())
+      return
+    }
     const xmlhttp = new global.XMLHttpRequest()
     xmlhttp.open('POST', 'http://www.per4ma.org/p4lc/p4lc.asmx', true)
 
