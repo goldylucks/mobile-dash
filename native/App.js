@@ -13,6 +13,7 @@ export default class mobileDashboard extends Component {
   }
 
   componentWillUnmount () {
+    delete global.state
     if (!__DEV__) {
       return
     }

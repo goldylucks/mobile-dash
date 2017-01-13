@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Image, AppState, AsyncStorage, TouchableWithoutFeedback, Dimensions, ActivityIndicator } from 'react-native'
+import { View, Text, Image, AppState, AsyncStorage, TouchableWithoutFeedback, Dimensions, ActivityIndicator } from 'react-native'
 import { Actions, ActionConst } from 'react-native-router-flux'
 import DatePicker from 'react-native-datepicker'
 import moment from 'moment'
@@ -67,6 +67,7 @@ export default class HomePage extends Component {
         { this.renderNav() }
         { this.renderDate() }
         { this.renderStats() }
+        { this.renderWelcomeMessage() }
       </View>
     )
   }
@@ -136,6 +137,18 @@ export default class HomePage extends Component {
     }
     return (
       <Stats data={ this.state.stats } />
+    )
+  }
+
+  renderWelcomeMessage () {
+    return (
+      <View style={ [styles.welcomeMessage, this.state.stats.length ? styles.hideWelcomeMessage : {}] } ref={ el => this._welcomeMsg = el }>
+        <View>
+          <Text style={ styles.welcomeMessageHeadline }>Per4ma</Text>
+          <Text style={ styles.welcomeMessageText }>Click on the top nav menu to select a company level to get it's indices</Text>
+          <Text style={ styles.welcomeMessageLoginText }>Click on the top left icon to logout and login with different credentials</Text>
+        </View>
+      </View>
     )
   }
 
@@ -287,6 +300,36 @@ const styles = {
     backgroundColor: '#006738',
     height: 10,
     width: 20,
+  },
+
+  welcomeMessage: {
+    flex: 1,
+    marginTop: 40,
+    paddingLeft: 20,
+    paddingRight: 20,
+  },
+
+  // workaround for bug
+  hideWelcomeMessage: {
+    position: 'absolute',
+    top: Dimensions.get('window').height * 2, // multiply by 2 just in case
+  },
+
+  welcomeMessageHeadline: {
+    fontSize: 35,
+    textAlign: 'center',
+    color: '#333',
+  },
+
+  welcomeMessageText: {
+    fontSize: 25,
+    color: '#333',
+  },
+
+  welcomeMessageLoginText: {
+    fontSize: 18,
+    marginTop: 20,
+    color: '#333',
   },
 
   loading: {
