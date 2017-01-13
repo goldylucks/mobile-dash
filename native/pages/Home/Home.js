@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Image, AsyncStorage, TouchableWithoutFeedback, Dimensions, ActivityIndicator } from 'react-native'
+import { View, Image, AppState, AsyncStorage, TouchableWithoutFeedback, Dimensions, ActivityIndicator } from 'react-native'
 import { Actions, ActionConst } from 'react-native-router-flux'
 import DatePicker from 'react-native-datepicker'
 import moment from 'moment'
@@ -22,6 +22,7 @@ export default class HomePage extends Component {
     accordionTitle: null,
     accordionShowOnlyTitle: true,
     accordionSelectedKey: '0',
+    appState: 'active',
     date: moment().format(dateFormat),
   }
 
@@ -38,6 +39,14 @@ export default class HomePage extends Component {
           .then(() => this.setState({ isViewLoaded: true }))
       })
       .catch(err => logger.error('err', err))
+  }
+
+  componentDidMount () {
+    AppState.addEventListener('change', this.onAppStateChange)
+  }
+
+  componentWillUnmount () {
+    AppState.removeEventListener('change', this.onAppStateChange)
   }
 
   render () {
@@ -194,6 +203,14 @@ export default class HomePage extends Component {
       this.setState({ loadingStats: false })
       logger.error('fetchStats err:', err)
     })
+  }
+
+  onAppStateChange = nextAppState => {
+    if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
+      const { token, accordionSelectedKey, accordionTitle, date } = this.state
+      this.fetchStats(token, accordionSelectedKey, accordionTitle, date)
+    }
+    this.setState({ appState: nextAppState })
   }
 
 }
