@@ -8,8 +8,7 @@
     "configGradle": "configGradle",
     "configGradleSetup": "configGradleSetup",
     "installOnDevice": "installOnDevice",
-    "installHooks": "./scripts/hooks.sh",
-    "lint": "eslint native shared --ignore-path .gitignore"
+    "lint": "eslint native --ignore-path .gitignore"
   },
   "dependencies": {
     "moment": "^2.17.1",
@@ -28,9 +27,15 @@
     "eslint-plugin-promise": "^3.4.0",
     "eslint-plugin-react": "^6.8.0",
     "eslint-plugin-standard": "^2.0.1",
+    "git-scripts": "^0.2.1",
     "react-native-gradle-config": "^2.0.0",
     "react-native-install-on-device": "^1.0.1",
     "react-native-keep-awake": "^1.0.7",
     "replace": "^0.3.0"
+  },
+  "git": {
+    "scripts": {
+      "pre-commit": "npm run lint"
+    }
   }
 }
